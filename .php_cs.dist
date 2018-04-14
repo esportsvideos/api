@@ -1,0 +1,64 @@
+<?php
+
+$header = <<<COMMENT
+This file is part of the Esports Videos project.
+
+(c) Esports Videos <https://github.com/esportsvideos/api/>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+COMMENT;
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude('tests/Fixtures/app/cache')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@DoctrineAnnotation' => true,
+        'doctrine_annotation_array_assignment' => [
+            'operator' => '=',
+        ],
+        'doctrine_annotation_spaces' => [
+            'after_array_assignments_equals' => false,
+            'before_array_assignments_equals' => false,
+        ],
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'array_syntax' => [
+            'syntax' => 'short',
+        ],
+        'braces' => [
+            'allow_single_line_closure' => true,
+        ],
+        'declare_strict_types' => true,
+        'header_comment' => [
+            'header' => $header,
+            'location' => 'after_open',
+        ],
+        'modernize_types_casting' => true,
+        'no_extra_consecutive_blank_lines' => [
+            'break',
+            'continue',
+            'curly_brace_block',
+            'extra',
+            'parenthesis_brace_block',
+            'return',
+            'square_brace_block',
+            'throw',
+            'use',
+        ],
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'ordered_imports' => true,
+        'phpdoc_order' => true,
+        'psr4' => true,
+        'semicolon_after_instruction' => true,
+        'strict_comparison' => true,
+        'strict_param' => true,
+        'ternary_to_null_coalescing' => true,
+    ])
+    ->setFinder($finder)
+;
