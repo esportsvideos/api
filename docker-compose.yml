@@ -39,13 +39,17 @@ services:
       - '3306:3306'
     volumes:
       - 'db-data:/var/lib/mysql'
-  
-  node:
-    build:
-      context: 'docker/node' 
-    user: 'node:node'
-    volumes:
-      - './:/home/node/app'
+
+  adminer:
+    image: adminer
+    ports:
+      - 8081:8080
+    
+  mail:
+    image: djfarrelly/maildev
+    ports:
+      - 1025:25
+      - 1080:80
 
 volumes:
   db-data:

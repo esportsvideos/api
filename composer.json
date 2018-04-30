@@ -1,11 +1,15 @@
 {
+    "name": "esportsvideos/api",
+    "description": "Api of the website https://www.esports-videos.com",
     "type": "project",
     "license": "proprietary",
+    "homepage": "https://www.esports-videos.com",
     "require": {
         "php": "^7.1.3",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.1",
         "doctrine/doctrine-migrations-bundle": "^1.3",
+        "lexik/jwt-authentication-bundle": "^2.4",
         "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/console": "^4.0",
         "symfony/flex": "^1.0",
@@ -13,6 +17,8 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
+        "symfony/security-bundle": "^4.0",
+        "symfony/swiftmailer-bundle": "^3.2",
         "symfony/yaml": "^4.0"
     },
     "require-dev": {
