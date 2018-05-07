@@ -22,6 +22,10 @@ help:
 	@ awk '/^#/{ comment = substr($$0,3) } comment && /^[a-zA-Z][a-zA-Z0-9_-]+ ?:/{ print "   ", $$1, comment }' $(MAKEFILE_LIST) | column -t -s ':' | sort
 	@ echo ''
 
+# Install the project
+.PHONY: install
+install: build up composer-install fixtures
+
 # Build docker images
 .PHONY: build
 build:
@@ -47,8 +51,8 @@ else
 endif
 
 # Connect to the php container
-.PHONY: shell
-shell:
+.PHONY: bash
+bash:
 	docker-compose exec php /bin/sh
 
 # Execute composer require

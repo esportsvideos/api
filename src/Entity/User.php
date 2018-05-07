@@ -13,21 +13,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- *     attributes={
- *         "normalization_context"={"groups"={"read"}},
- *         "denormalization_context"={"groups"={"write"}}
- *     }
- * )
- *
  * @ORM\Entity
  * @ORM\Table(name="api_user")
  *
@@ -35,10 +24,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface, \Serializable
 {
+    const ROLE_DEFAULT = 'ROLE_USER';
+
     /**
      * @var int
-     *
-     * @Groups({"read", "write"})
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -49,7 +38,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=25)
      */
     private $username;
 
@@ -62,8 +51,13 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
+     */
+    private $plainPassword;
+
+    /**
+     * @var string
      *
-     * @ORM\Column(type="string", length=254, unique=true)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -75,7 +69,7 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @var array
+     * @var string[]
      *
      * @ORM\Column(type="json")
      */
@@ -84,7 +78,7 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->isActive = true;
-        $this->roles = ['ROLE_USER'];
+        $this->roles = [self::ROLE_DEFAULT];
     }
 
     /**
@@ -104,6 +98,7 @@ class User implements UserInterface, \Serializable
             [
                 $this->id,
                 $this->username,
+                $this->email,
             ]
         );
     }
@@ -111,19 +106,20 @@ class User implements UserInterface, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
-        list(
+        [
             $this->id,
-            $this->username
-            ) = unserialize($serialized, ['allowed_classes' => false]);
+            $this->username,
+        ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
+        $this->plainPassword = null;
     }
 
     /**
@@ -151,9 +147,9 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -203,7 +199,7 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles(): array
     {
-        return $this->roles;
+        return array_unique($this->roles);
     }
 
     /**
@@ -212,5 +208,47 @@ class User implements UserInterface, \Serializable
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return $this
+     */
+    public function addRole(string $role): self
+    {
+        $role = strtoupper($role);
+
+        if (!\in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $role
+     *
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return \in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 }

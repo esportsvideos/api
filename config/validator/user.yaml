@@ -1,0 +1,19 @@
+App\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['email']
+            groups: ['post']
+    properties:
+        username:
+            - NotBlank: ~
+        plainPassword:
+            - NotBlank:
+                groups: ['post']
+            - Length:
+                max: 4096
+                groups: ['post']
+        email:
+            - NotBlank:
+                groups: ['post']
+            - Email:
+                groups: ['post']

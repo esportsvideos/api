@@ -5,4 +5,8 @@ framework:
         handler_id: ~
     php_errors:
         log: true
-    cache:
+    cache: ~
+    serializer:
+        enabled: true
+        mapping:
+            paths: ['%kernel.project_dir%/config/serializer/']

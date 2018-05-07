@@ -1,0 +1,19 @@
+resources:
+    App\Entity\User:
+        collectionOperations:
+            post:
+                validation_groups:
+                    - 'post'
+                normalization_context:
+                    groups:
+                        - 'get'
+        itemOperations:
+            get:
+                normalization_context:
+                    groups:
+                        - 'get'
+            put:
+                access_control: "object == user"
+                denormalization_context:
+                    groups:
+                        - 'post'

@@ -1,0 +1,10 @@
+App\Entity\User:
+    attributes:
+        id:
+            groups: ['get']
+        username:
+            groups: ['get']
+        plainPassword:
+            groups: ['post']
+        email:
+            groups: ['post', 'put']

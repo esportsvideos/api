@@ -1,5 +1,8 @@
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
+        paths:
+          - '%kernel.project_dir%/config/api_platform/resources/'
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
     title: Esports Videos
     version: 1.0.0
