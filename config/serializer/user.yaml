@@ -3,8 +3,8 @@ App\Entity\User:
         id:
             groups: ['get']
         username:
-            groups: ['get']
+            groups: ['get', 'put']
         plainPassword:
-            groups: ['post']
+            groups: ['post', 'put']
         email:
             groups: ['post', 'put']

@@ -42,7 +42,7 @@
         "version": "v2.8.1"
     },
     "doctrine/data-fixtures": {
-        "version": "v1.3.0"
+        "version": "v1.3.1"
     },
     "doctrine/dbal": {
         "version": "v2.6.3"
@@ -104,6 +104,9 @@
             "ref": "81dee417d2cc60cd1c9d6208dff2ec22a1103e93"
         }
     },
+    "fzaninotto/faker": {
+        "version": "v1.7.1"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.33"
     },
@@ -112,6 +115,18 @@
     },
     "league/html-to-markdown": {
         "version": "4.6.2"
+    },
+    "myclabs/deep-copy": {
+        "version": "1.7.0"
+    },
+    "nelmio/alice": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.2",
+            "ref": "5ef2976310e8f9621c1a722a73bfbe115c1559a3"
+        }
     },
     "nelmio/cors-bundle": {
         "version": "1.5",

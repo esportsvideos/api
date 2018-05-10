@@ -1,0 +1,33 @@
+App\Entity\User:
+    type: entity
+    table: api_user
+    id:
+        id:
+          type: integer
+          generator:
+            strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: 64
+            unique: true
+        password:
+            type: string
+            length: 64
+        email:
+            type: string
+            length: 255
+            unique: true
+        enabled:
+            type: boolean
+            options:
+                default: false
+        roles:
+            type: json
+        slug:
+            length: 64
+            unique: true
+            gedmo:
+                slug:
+                    fields:
+                      - username

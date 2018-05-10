@@ -13,39 +13,27 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="api_user")
- *
  * @author Maxime Cornet <xelysion@icloud.com>
  */
-class User implements UserInterface, \Serializable
+class User implements AdvancedUserInterface, \Serializable
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
+    private const ROLE_DEFAULT = 'ROLE_USER';
 
     /**
      * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=25)
      */
     private $username;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=64)
      */
     private $password;
 
@@ -56,35 +44,34 @@ class User implements UserInterface, \Serializable
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $enabled;
+
+    /**
+     * @var string
+     */
+    private $slug;
 
     /**
      * @var string[]
-     *
-     * @ORM\Column(type="json")
      */
     private $roles;
 
     public function __construct()
     {
-        $this->isActive = true;
+        $this->enabled = false;
         $this->roles = [self::ROLE_DEFAULT];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -99,6 +86,7 @@ class User implements UserInterface, \Serializable
                 $this->id,
                 $this->username,
                 $this->email,
+                $this->enabled,
             ]
         );
     }
@@ -111,6 +99,8 @@ class User implements UserInterface, \Serializable
         [
             $this->id,
             $this->username,
+            $this->email,
+            $this->enabled,
         ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 
@@ -120,6 +110,46 @@ class User implements UserInterface, \Serializable
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAccountNonExpired(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAccountNonLocked(): bool
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCredentialsNonExpired(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 
     /**
@@ -179,22 +209,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
      * @return array
      */
     public function getRoles(): array
@@ -250,5 +264,21 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword(string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
     }
 }

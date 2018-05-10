@@ -6,7 +6,7 @@ security:
         database_users:
             entity:
                 class: App\Entity\User
-                property: username
+                property: email
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
@@ -20,6 +20,7 @@ security:
             provider: database_users
             json_login:
                 check_path: login_check
+                username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:

@@ -13,7 +13,17 @@ resources:
                     groups:
                         - 'get'
             put:
-                access_control: "object == user"
+                access_control: 'object == user'
+                validation_groups:
+                    - 'put'
                 denormalization_context:
                     groups:
-                        - 'post'
+                        - 'put'
+                normalization_context:
+                    groups:
+                        - 'get'
+        properties:
+            slug:
+                identifier: true
+            id:
+                identifier: false

@@ -16,7 +16,6 @@ namespace App\EventSubscriber\UserRegister;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,7 +25,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UpdatePasswordSubscriber implements EventSubscriberInterface
 {
-    /** @var UserPasswordEncoderInterface */
+    /** @var UserPasswordEncoderInterface $encoder */
     private $encoder;
 
     /**
@@ -56,9 +55,8 @@ class UpdatePasswordSubscriber implements EventSubscriberInterface
     {
         /** @var User */
         $user = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
 
-        if (!$user instanceof User && Request::METHOD_POST !== $method) {
+        if (!$user instanceof User) {
             return;
         }
 

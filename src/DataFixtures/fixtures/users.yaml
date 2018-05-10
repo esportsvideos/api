@@ -1,0 +1,19 @@
+App\Entity\User:
+    admin:
+        username: 'admin'
+        email: 'admin@esv.com'
+        plainPassword: 'esv'
+        roles: ['ROLE_ADMIN']
+        enabled: true
+    active_user:
+        username: 'user'
+        email: 'user@esv.com'
+        plainPassword: 'esv'
+        roles: ['ROLE_USER']
+        enabled: true
+    inactive_user:
+        username: 'inactive_user'
+        email: 'inactive.user@esv.com'
+        plainPassword: 'esv'
+        roles: ['ROLE_USER']
+        enabled: false
