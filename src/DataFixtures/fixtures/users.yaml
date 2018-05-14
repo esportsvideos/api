@@ -16,4 +16,10 @@ App\Entity\User:
         email: 'inactive.user@esv.com'
         plainPassword: 'esv'
         roles: ['ROLE_USER']
-        enabled: false
+    token_expired_user:
+        username: 'token_expired_user'
+        email: 'token.expired.user@esv.com'
+        plainPassword: 'esv'
+        roles: ['ROLE_USER']
+        enabled: true
+        tokenExpired: true

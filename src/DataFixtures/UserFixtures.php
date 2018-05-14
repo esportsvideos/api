@@ -16,7 +16,6 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Gedmo\Sluggable\Util\Urlizer;
 use Nelmio\Alice\Loader\NativeLoader;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -26,6 +25,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *   - 1 admin account
  *   - 1 active user
  *   - 1 inactive user
+ *   - 1 active user that have tokenExpired.
+ *
  * Password of these users is esv.
  *
  * @author Maxime Cornet <xelysion@icloud.com>
@@ -56,7 +57,6 @@ class UserFixtures extends Fixture
         /** @var User $user */
         foreach ($users->getObjects() as $user) {
             $user->setPassword($this->encoder->encodePassword($user, $user->getPlainPassword()));
-            $user->setSlug(Urlizer::urlize($user->getUsername(), '-'));
             $manager->persist($user);
         }
 

@@ -11,16 +11,19 @@
 
 declare(strict_types=1);
 
-namespace App\EventSubscriber\UserRegister;
+namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
+ * In PUT & POST method, update the plainPassword to encoded password.
+ *
  * @author Maxime Cornet <xelysion@icloud.com>
  */
 class UpdatePasswordSubscriber implements EventSubscriberInterface
@@ -47,16 +50,15 @@ class UpdatePasswordSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Change the plainPassword to encoded password.
-     *
      * @param GetResponseForControllerResultEvent $event
      */
     public function updatePassword(GetResponseForControllerResultEvent $event): void
     {
-        /** @var User */
+        /** @var User $user */
         $user = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
 
-        if (!$user instanceof User) {
+        if (!$user instanceof User || (Request::METHOD_POST !== $method && Request::METHOD_PUT !== $method)) {
             return;
         }
 

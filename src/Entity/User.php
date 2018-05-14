@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
@@ -62,9 +63,15 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @var bool
+     */
+    private $tokenExpired;
+
     public function __construct()
     {
         $this->enabled = false;
+        $this->tokenExpired = false;
         $this->roles = [self::ROLE_DEFAULT];
     }
 
@@ -280,5 +287,31 @@ class User implements AdvancedUserInterface, \Serializable
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTokenExpired(): bool
+    {
+        return $this->tokenExpired;
+    }
+
+    /**
+     * @param bool $tokenExpired
+     */
+    public function setTokenExpired(bool $tokenExpired): void
+    {
+        $this->tokenExpired = $tokenExpired;
+    }
+
+    /**
+     * @param PreUpdateEventArgs $event
+     */
+    public function preUpdate(PreUpdateEventArgs $event)
+    {
+        if ($event->hasChangedField('password')) {
+            $this->setTokenExpired(true);
+        }
     }
 }
