@@ -11,12 +11,20 @@ App\Entity\User:
             type: string
             length: 64
             unique: true
+        firstName:
+            type: string
+            nullable: true
+        lastName:
+            type: string
+            nullable: true
+        country:
+            type: string
+            nullable: true
         password:
             type: string
             length: 64
         email:
             type: string
-            length: 255
             unique: true
         enabled:
             type: boolean

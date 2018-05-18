@@ -54,11 +54,12 @@ class UpdatePasswordSubscriber implements EventSubscriberInterface
      */
     public function updatePassword(GetResponseForControllerResultEvent $event): void
     {
-        /** @var User $user */
+        /** @var mixed|User $user */
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if (!$user instanceof User || (Request::METHOD_POST !== $method && Request::METHOD_PUT !== $method)) {
+        if (!$user instanceof User || !$user->getPlainPassword() ||
+            (Request::METHOD_POST !== $method && Request::METHOD_PUT !== $method)) {
             return;
         }
 

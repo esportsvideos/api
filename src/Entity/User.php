@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Traits\IdTrait;
+use App\Entity\Traits\SluggableTrait;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -23,10 +25,7 @@ class User implements AdvancedUserInterface, \Serializable
 {
     private const ROLE_DEFAULT = 'ROLE_USER';
 
-    /**
-     * @var int
-     */
-    private $id;
+    use IdTrait, SluggableTrait;
 
     /**
      * @var string
@@ -54,11 +53,6 @@ class User implements AdvancedUserInterface, \Serializable
     private $enabled;
 
     /**
-     * @var string
-     */
-    private $slug;
-
-    /**
      * @var string[]
      */
     private $roles;
@@ -67,6 +61,21 @@ class User implements AdvancedUserInterface, \Serializable
      * @var bool
      */
     private $tokenExpired;
+
+    /**
+     * @var string|null
+     */
+    private $firstName;
+
+    /**
+     * @var string|null
+     */
+    private $lastName;
+
+    /**
+     * @var string|null
+     */
+    private $country;
 
     public function __construct()
     {
@@ -274,22 +283,6 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return string
-     */
-    public function getSlug(): string
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     */
-    public function setSlug(string $slug): void
-    {
-        $this->slug = $slug;
-    }
-
-    /**
      * @return bool
      */
     public function isTokenExpired(): bool
@@ -313,5 +306,53 @@ class User implements AdvancedUserInterface, \Serializable
         if ($event->hasChangedField('password')) {
             $this->setTokenExpired(true);
         }
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param null|string $firstName
+     */
+    public function setFirstName(?string $firstName): void
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param null|string $lastName
+     */
+    public function setLastName(?string $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param null|string $country
+     */
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
     }
 }

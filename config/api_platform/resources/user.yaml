@@ -23,7 +23,19 @@ resources:
                     groups:
                         - 'get'
         properties:
-            slug:
-                identifier: true
             id:
                 identifier: false
+                iri: http://schema.org/identifier
+            username:
+                iri: http://schema.org/additionalName
+            firstName:
+                iri: http://schema.org/givenName
+            lastName:
+                iri: http://schema.org/familyName
+            email:
+                iri: http://schema.org/email
+            country:
+                iri: http://schema.org/nationality
+            slug:
+                identifier: true
+                iri: http://schema.org/url

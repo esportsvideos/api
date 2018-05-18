@@ -5,17 +5,26 @@ App\Entity\User:
         plainPassword: 'esv'
         roles: ['ROLE_ADMIN']
         enabled: true
+        firstName: 'admin'
+        lastName: 'admin'
+        country: 'FR'
     active_user:
         username: 'user'
         email: 'user@esv.com'
         plainPassword: 'esv'
         roles: ['ROLE_USER']
         enabled: true
+        firstName: 'user'
+        lastName: 'user'
+        country: 'DE'
     inactive_user:
         username: 'inactive_user'
         email: 'inactive.user@esv.com'
         plainPassword: 'esv'
         roles: ['ROLE_USER']
+        firstName: 'inactive'
+        lastName: 'inactive'
+        country: 'BE'
     token_expired_user:
         username: 'token_expired_user'
         email: 'token.expired.user@esv.com'
@@ -23,3 +32,6 @@ App\Entity\User:
         roles: ['ROLE_USER']
         enabled: true
         tokenExpired: true
+        firstName: 'token_expired_user'
+        lastName: 'token_expired_user'
+        country: 'GB'

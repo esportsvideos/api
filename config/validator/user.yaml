@@ -1,24 +1,40 @@
 App\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: ['email', 'username']
+            fields: ['email']
+            groups: ['post', 'put']
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['username']
             groups: ['post', 'put']
     properties:
         username:
-            - NotBlank: ~
+            - Length:
+                max: 64
+                groups: ['put', 'post']
         plainPassword:
             - NotBlank:
                 groups: ['post']
             - Length:
                 max: 4096
                 min: 12
-                groups: ['post']
+                groups: ['put', 'post']
             - Regex:
                 pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*([-+_!@#$%^&*.,?])).{12,}$/'
-                groups: ['post']
+                groups: ['put', 'post']
                 message: user.validator.password.regex
         email:
             - NotBlank:
                 groups: ['post']
             - Email:
-                groups: ['post']
+                groups: ['post', 'put']
+        country:
+            - Country:
+                groups: ['post', 'put']
+        firstName:
+            - Length:
+                max: 255
+                groups: ['post', 'put']
+        lastName:
+            - Length:
+                max: 255
+                groups: ['post', 'put']
