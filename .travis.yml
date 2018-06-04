@@ -1,0 +1,13 @@
+sudo: required
+
+services:
+  - docker
+  
+before_install:
+  - sudo service mysql stop
+
+install:
+  - make install
+
+script:
+  - make travis
