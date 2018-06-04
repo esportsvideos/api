@@ -16,3 +16,12 @@ docker-compose.override.yml
 /.php_cs
 /.php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> behat/symfony2-extension ###
+behat.yml
+###< behat/symfony2-extension ###

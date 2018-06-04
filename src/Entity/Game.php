@@ -21,7 +21,7 @@ use App\Entity\Traits\SluggableTrait;
 /**
  * @author Maxime Cornet <xelysion@icloud.com>
  */
-class Category
+class Game
 {
     use IdTrait, NameTrait, DescriptionTrait, SluggableTrait;
 }

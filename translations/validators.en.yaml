@@ -1,0 +1,1 @@
+user.validator.password.regex: 'Your password must have at least 1 uppercase, 1 lowercase, 1 number and 1 special character.'

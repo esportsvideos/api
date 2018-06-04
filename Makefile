@@ -24,13 +24,20 @@ help:
 
 # Install the project
 .PHONY: install
-install: build up composer-install fixtures
+install: build up jwt undist composer-install fixtures
 
 # Build docker images
 .PHONY: build
 build:
 	docker-compose build $(VAR_BUILD_ARG) php
 	docker-compose build mysql nginx
+
+# Create the public & private key for JWT
+.PHONY: jwt
+jwt:
+	$(VAR_PHP_CONTAINER) mkdir var/jwt
+	$(VAR_PHP_CONTAINER) openssl genrsa -out var/jwt/private.pem 4096
+	$(VAR_PHP_CONTAINER) openssl rsa -pubout -in var/jwt/private.pem -out var/jwt/public.pem
 
 # Launch the docker dev stack
 .PHONY: up
@@ -42,6 +49,7 @@ else
 	docker-compose up -d
 endif
 
+# Stop the docker dev stack
 .PHONY: stop
 stop:
 ifeq (Darwin,$(UNAME_S))
@@ -64,7 +72,7 @@ composer-require:
 # Execute composer install
 .PHONY: composer-install
 composer-install:
-	$(VAR_COMPOSER) install
+	$(VAR_COMPOSER) install -o
 
 # Execute composer update
 .PHONY: composer-update
@@ -84,12 +92,13 @@ php-cs:
 # Execute travis tests
 .PHONY: travis
 travis:
-	$(VAR_PHP_CONTAINER) php vendor/bin/php-cs-fixer fix ./src --diff --dry-run -v
+	$(VAR_PHP_CONTAINER) php bin/php-cs-fixer fix ./src --diff --dry-run -v
 	$(VAR_CONSOLE) lint:yaml config
 	$(VAR_CONSOLE) lint:twig templates
 	$(VAR_CONSOLE) security:check --end-point=http://security.sensiolabs.org/check_lock
 	$(VAR_COMPOSER) validate --strict
 	$(VAR_CONSOLE) doctrine:schema:validate --skip-sync -vvv --no-interaction
+	$(VAR_CONSOLE) bin/behat -f progress
 
 # Load data fixtures to your database.
 .PHONY: fixtures
@@ -116,3 +125,11 @@ migration-execute:
 .PHONY: migration-diff
 migration-diff:
 	$(VAR_CONSOLE) doctrine:migrations:diff
+
+# Copy all .dist files to base files.
+.PHONY: undist
+undist:
+	cp behat.yml.dist behat.yml
+	cp .env.dist .env
+	cp .php_cs.dist .php_cs
+	cp phpunit.xml.dist phpunit.xml

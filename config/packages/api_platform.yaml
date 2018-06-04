@@ -6,3 +6,7 @@ api_platform:
         - '%kernel.project_dir%/src/Entity'
     title: Esports Videos
     version: 1.0.0
+    formats:
+        jsonld:   ['application/ld+json']
+        json:     ['application/json']
+        html:     ['text/html']
