@@ -24,7 +24,7 @@ help:
 
 # Install the project
 .PHONY: install
-install: build up jwt undist composer-install fixtures
+install: build up jwt undist composer-install schema@create fixtures
 
 # Build docker images
 .PHONY: build
@@ -35,7 +35,7 @@ build:
 # Create the public & private key for JWT
 .PHONY: jwt
 jwt:
-	$(VAR_PHP_CONTAINER) mkdir config/jwt
+	$(VAR_PHP_CONTAINER) mkdir -p config/jwt
 	$(VAR_PHP_CONTAINER) openssl genrsa -out config/jwt/private.pem 4096
 	$(VAR_PHP_CONTAINER) openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
@@ -98,12 +98,12 @@ travis:
 	$(VAR_CONSOLE) security:check --end-point=http://security.sensiolabs.org/check_lock
 	$(VAR_COMPOSER) validate --strict
 	$(VAR_CONSOLE) doctrine:schema:validate --skip-sync -vvv --no-interaction
-	$(VAR_CONSOLE) bin/behat -f progress
+	$(VAR_PHP_CONTAINER) php bin/behat -f progress
 
 # Load data fixtures to your database.
 .PHONY: fixtures
 fixtures:
-	$(VAR_CONSOLE) doctrine:fixtures:load
+	$(VAR_CONSOLE) doctrine:fixtures:load --no-interaction
 
 # View the status of a set of migrations.
 .PHONY: migration-status
@@ -133,3 +133,13 @@ undist:
 	cp .env.dist .env
 	cp .php_cs.dist .php_cs
 	cp phpunit.xml.dist phpunit.xml
+
+# Executes (or dumps) the SQL needed to generate the database schema
+.PHONY: schema@create
+schema@create:
+	$(VAR_CONSOLE) doctrine:schema:create --no-interaction
+
+# Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata.
+.PHONY: schema@update
+schema@update:
+	$(VAR_CONSOLE) doctrine:schema:update --force
