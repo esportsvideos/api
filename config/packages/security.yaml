@@ -14,15 +14,20 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            pattern: ^/
-            anonymous: true
+        login:
+            pattern: ^/login_check
+            stateless: true
             provider: database_users
+            anonymous: true
             json_login:
                 check_path: login_check
                 username_path: email
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        main:
+            pattern: ^/
+            anonymous: true
+            stateless: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator

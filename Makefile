@@ -35,9 +35,9 @@ build:
 # Create the public & private key for JWT
 .PHONY: jwt
 jwt:
-	$(VAR_PHP_CONTAINER) mkdir var/jwt
-	$(VAR_PHP_CONTAINER) openssl genrsa -out var/jwt/private.pem 4096
-	$(VAR_PHP_CONTAINER) openssl rsa -pubout -in var/jwt/private.pem -out var/jwt/public.pem
+	$(VAR_PHP_CONTAINER) mkdir config/jwt
+	$(VAR_PHP_CONTAINER) openssl genrsa -out config/jwt/private.pem 4096
+	$(VAR_PHP_CONTAINER) openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
 
 # Launch the docker dev stack
 .PHONY: up
