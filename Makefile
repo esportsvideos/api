@@ -27,7 +27,7 @@ help:
 
 # Install the project
 .PHONY: install
-install: build up jwt undist composer-install schema@create fixtures
+install: build up jwt undist composer-install schema-create fixtures
 
 # Build docker images
 .PHONY: build
