@@ -1,5 +1,6 @@
 # Vars
 VAR_PHP_CONTAINER=docker-compose exec php
+VAR_MYSQL_CONTAINER=docker-compose exec mysql
 VAR_COMPOSER=$(VAR_PHP_CONTAINER) composer
 VAR_CONSOLE=$(VAR_PHP_CONTAINER) php bin/console
 UNAME_S=$(shell uname -s)
@@ -8,6 +9,8 @@ UNAME_S=$(shell uname -s)
 ifeq (Linux,$(UNAME_S))
 VAR_BUILD_ARG=--build-arg AS_UID=$(shell id -u)
 endif
+
+.DEFAULT_GOAL := help
 
 # Help
 .PHONY: help
@@ -79,6 +82,11 @@ composer-install:
 composer-update:
 	$(VAR_COMPOSER) update $(ARG)
 
+# The validate command validates a given composer.json and composer.lock
+.PHONY: composer-validate
+composer-validate:
+	$(VAR_COMPOSER) validate --strict
+
 # Symfony's Console
 .PHONY: console
 console:
@@ -89,16 +97,29 @@ console:
 php-cs:
 	$(VAR_PHP_CONTAINER) php vendor/bin/php-cs-fixer fix ./src
 
+# Launch php cs fixer with dry run
+.PHONY: php-cs-dry
+php-cs-dry:
+	$(VAR_PHP_CONTAINER) php vendor/bin/php-cs-fixer fix ./src --diff --dry-run
+
+# Checks security issues in your project dependencies
+.PHONY: security-check
+security-check:
+	$(VAR_CONSOLE) security:check
+
+# Lints a file and outputs encountered errors
+.PHONY: lint-yaml
+lint-yaml:
+	$(VAR_CONSOLE) lint:yaml config
+
+# Lints a template and outputs encountered errors
+.PHONY: lint-twig
+lint-twig:
+	$(VAR_CONSOLE) lint:twig templates
+
 # Execute travis tests
 .PHONY: travis
-travis:
-	$(VAR_PHP_CONTAINER) php bin/php-cs-fixer fix ./src --diff --dry-run -v
-	$(VAR_CONSOLE) lint:yaml config
-	$(VAR_CONSOLE) lint:twig templates
-	$(VAR_CONSOLE) security:check --end-point=http://security.sensiolabs.org/check_lock
-	$(VAR_COMPOSER) validate --strict
-	$(VAR_CONSOLE) doctrine:schema:validate --skip-sync -vvv --no-interaction
-	$(VAR_PHP_CONTAINER) php bin/behat -f progress
+travis: php-cs-dry lint-twig lint-yaml security-check composer-validate schema-validate behat
 
 # Load data fixtures to your database.
 .PHONY: fixtures
@@ -135,11 +156,21 @@ undist:
 	cp phpunit.xml.dist phpunit.xml
 
 # Executes (or dumps) the SQL needed to generate the database schema
-.PHONY: schema@create
-schema@create:
+.PHONY: schema-create
+schema-create:
 	$(VAR_CONSOLE) doctrine:schema:create --no-interaction
 
 # Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata.
-.PHONY: schema@update
-schema@update:
+.PHONY: schema-update
+schema-update:
 	$(VAR_CONSOLE) doctrine:schema:update --force
+
+# Validate the mapping files.
+.PHONY: schema-validate
+schema-validate:
+	$(VAR_CONSOLE) doctrine:schema:validate --skip-sync --no-interaction
+
+# Executes behat test
+.PHONY: behat
+behat:
+	$(VAR_PHP_CONTAINER) php bin/behat $(ARG)
