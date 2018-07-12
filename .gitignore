@@ -1,5 +1,6 @@
 # Docker
 docker-compose.override.yml
+docker/blackfire/.env
 
 ###> symfony/framework-bundle ###
 /.env
