@@ -1,29 +1,23 @@
-version: '2'
+version: '3.4'
 
 services:
   nginx:
-    image: 'nginx:1.11-alpine'
-    links:
-      - 'php'
+    build: 
+      context: './docker/nginx/'
     depends_on:
       - 'php'
     ports: 
       - '80:80'
       - '443:443'
     volumes:
-      - './docker/nginx/conf.d:/etc/nginx/conf.d:ro'
       - './public:/srv/esports_videos/public:ro'
 
   php:
     build:
       context: './docker/php-fpm'
     volumes:
-      - './:/srv/esports_videos:rw'
-      - '/srv/esports_videos/var/'
-      - '/srv/esports_videos/var/cache/'
-      - '/srv/esports_videos/var/logs/'
-      - '/srv/esports_videos/var/sessions/'
-    links:
+      - './:/srv/esports_videos:rw,cached'
+    depends_on:
       - 'mysql'
     user: 'www-data:www-data'
 
@@ -41,15 +35,17 @@ services:
       - 'db-data:/var/lib/mysql'
 
   adminer:
-    image: adminer
+    image: 'adminer'
+    depends_on:
+      - 'mysql'
     ports:
-      - 8081:8080
-    
+      - '8081:8080'
+
   mail:
-    image: djfarrelly/maildev
+    image: 'djfarrelly/maildev'
     ports:
-      - 1025:25
-      - 1080:80
+      - '1025:25'
+      - '1080:80'
 
 volumes:
-  db-data:
+  db-data: {}

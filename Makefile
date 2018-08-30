@@ -45,21 +45,12 @@ jwt:
 # Launch the docker dev stack
 .PHONY: up
 up:
-ifeq (Darwin,$(UNAME_S))
-	-docker-sync start
-	docker-compose -f docker-compose.yml -f docker-compose.sync.yml up -d
-else
 	docker-compose up -d
-endif
 
 # Stop the docker dev stack
 .PHONY: stop
 stop:
-ifeq (Darwin,$(UNAME_S))
-	docker-compose -f docker-compose.yml -f docker-compose.sync.yml stop
-else
 	docker-compose stop
-endif
 
 # Connect to the php container
 .PHONY: bash

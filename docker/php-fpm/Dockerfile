@@ -1,5 +1,5 @@
 FROM composer:1.6.1 as composer
-FROM php:7.2.4-fpm-alpine
+FROM php:7.2.8-fpm-alpine
 
 MAINTAINER Maxime Cornet <xelysion@icloud.com>
 
