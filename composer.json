@@ -1,15 +1,24 @@
 {
+    "name": "esportsvideos/api",
+    "description": "Api of the website https://www.esports-videos.com",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
+    "homepage": "https://www.esports-videos.com",
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Community Contributors",
+            "homepage": "https://github.com/esportsvideos/api/contributors"
+        }
+    ],
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.5.1",
         "symfony/framework-bundle": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/yaml": "7.2.*"
