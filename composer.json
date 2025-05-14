@@ -24,10 +24,16 @@
         "symfony/yaml": "7.2.*"
     },
     "require-dev": {
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.1.15",
+        "phpstan/phpstan-doctrine": "^2.0.3",
+        "phpstan/phpstan-strict-rules": "^2.0.4",
+        "phpstan/phpstan-symfony": "^2.0.6"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
