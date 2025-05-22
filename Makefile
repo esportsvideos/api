@@ -4,6 +4,7 @@ DOCKER_COMPOSE_ALL=$(DOCKER) compose --profile="*"
 DOCKER_PHP_CONTAINER=php
 DOCKER_BUILD=$(DOCKER_COMPOSE) --file compose.build.yaml
 EXEC_PHP=$(DOCKER_COMPOSE) exec --user=www-data $(DOCKER_PHP_CONTAINER)
+RUN_PHP=$(DOCKER_COMPOSE) run --rm $(DOCKER_PHP_CONTAINER)
 COMPOSER=$(EXEC_PHP) composer
 CONSOLE=$(EXEC_PHP) bin/console
 
@@ -11,7 +12,7 @@ CONSOLE=$(EXEC_PHP) bin/console
 ###--------------#
 ###    Docker    #
 ###--------------#
-## 
+##
 
 up: ## Create and start containers
 	$(DOCKER_COMPOSE) up -d
@@ -59,7 +60,7 @@ install: pull compose.override.yaml up vendor ## Install the project
 ###-----------------#
 ##
 
-PHP_CS_FIXER=docker run -it --user $$(id -u):$$(id -g) --rm -v "./:/code" -w /code ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
+PHP_CS_FIXER=docker run --user $$(id -u):$$(id -g) --rm -v "./:/code" -w /code ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
 
 cs: ## Check php code style
 	$(PHP_CS_FIXER) fix --diff --dry-run
@@ -68,7 +69,7 @@ fix-cs: ## Fix php code style
 	$(PHP_CS_FIXER) fix
 
 phpstan: ## Analyze php code
-	$(EXEC_PHP) ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
+	$(RUN_PHP) ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
 
 stan: phpstan ## Alias for phpstan
 qa: cs phpstan ## Run all Q&A tools
