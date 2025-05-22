@@ -9,6 +9,7 @@ CMD ["php-fpm"]
 
 # APPLICATION
 USER www-data
+WORKDIR /var/www
 COPY --chown=www-data:www-data composer.* symfony.lock .env ./
 
 RUN set -eux; \
