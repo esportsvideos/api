@@ -1,0 +1,45 @@
+server {
+    root /var/www/public;
+    access_log off;
+    server_tokens off;
+
+    gzip on;
+    gzip_min_length 10240;
+    gzip_comp_level 1;
+    gzip_vary on;
+    gzip_disable msie6;
+    gzip_proxied expired no-cache no-store private auth;
+    gzip_types
+        text/css
+        text/javascript
+        text/xml
+        text/plain
+        text/x-component
+        application/javascript
+        application/x-javascript
+        application/json
+        application/xml
+        application/rss+xml
+        application/atom+xml
+        font/truetype
+        font/opentype
+        application/vnd.ms-fontobject
+        image/svg+xml;
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ ^/index\.php(/|$) {
+        fastcgi_pass ${PHP_FPM_HOST}:9000;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        internal;
+    }
+
+    location ~ \.php$ {
+      return 404;
+    }
+}

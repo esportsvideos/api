@@ -1,0 +1,64 @@
+services:
+    traefik:
+        image: traefik:v3.4
+        command:
+            - "--api.insecure=true"
+            - "--providers.docker"
+            - "--providers.docker.exposedByDefault=false"
+            - "--entrypoints.web.address=:80"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.dashboard.rule=Host(`traefik.esv.localhost`)"
+            - "traefik.http.routers.dashboard.service=api@internal"
+            - "traefik.http.routers.dashboard.entrypoints=web"
+        volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock"
+
+    postgres:
+        image: postgres:17.5-alpine
+        environment:
+            - POSTGRES_DB=esv
+            - POSTGRES_PASSWORD=esv
+            - POSTGRES_USER=esv
+        volumes:
+            - "postgres-data:/var/lib/postgresql/data:rw"
+
+    php:
+        image: ghcr.io/esportsvideos/php:1.0.0-dev
+        depends_on:
+            - postgres
+        volumes:
+            - "./:/var/www:rw"
+        environment:
+            XDEBUG_MODE: "off"
+        extra_hosts:
+            - host.docker.internal:host-gateway
+
+    nginx:
+        image: nginx:1.27.5-alpine
+        depends_on:
+            - php
+        volumes:
+            - "./docker/nginx/templates/default.conf.template:/etc/nginx/templates/default.conf.template"
+            - "./public:/var/www/public"
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nginx.rule=Host(`api.esv.localhost`)"
+        environment:
+            - "PHP_FPM_HOST=php"
+
+    adminer:
+        image: adminer:4.17.1 # Upper version is bugged with DESIGN
+        depends_on:
+            - postgres
+        environment:
+            - ADMINER_DESIGN=dracula
+            - ADMINER_DEFAULT_SERVER=postgres
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.adminer.rule=Host(`adminer.esv.localhost`)"
+        profiles:
+            - debug
+
+volumes:
+    postgres-data: {}

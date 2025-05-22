@@ -1,0 +1,16 @@
+services:
+    php-production:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+            target: php
+
+    nginx-production:
+        build:
+            context: .
+            dockerfile: docker/Dockerfile
+            target: nginx
+        depends_on:
+            - php-production
+        environment:
+            - PHP_FPM_HOST=php-production

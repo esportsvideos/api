@@ -1,0 +1,46 @@
+name: Execute QA tests
+
+on:
+    push:
+        branches:
+            - main
+    pull_request: ~
+
+jobs:
+    php-cs-fixer:
+        name: Run php-cs-fixer
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: php-cs-fixer
+                run: make cs
+
+    phpstan:
+        name: Run phpstan
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Create and start containers
+                run: make up
+
+            -   name: Install dependencies
+                run: make vendor
+
+            -   name: Run phpstan
+                run: make phpstan
+
+    hadolint:
+        name: Run Hadolint
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v4
+
+            -   name: Run Hadolint
+                uses: hadolint/hadolint-action@v3.1.0
+                with:
+                    dockerfile: docker/Dockerfile

@@ -1,0 +1,8 @@
+services:
+    traefik:
+        ports:
+            - 80:80
+
+    php:
+        environment:
+            XDEBUG_MODE: "debug"

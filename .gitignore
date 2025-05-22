@@ -10,3 +10,4 @@
 ###< symfony/framework-bundle ###
 
 .php-cs-fixer.cache
+compose.override.yaml
