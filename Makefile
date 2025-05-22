@@ -47,10 +47,11 @@ build: ## Build all images
 
 bash: sh ## Alias for sh
 start: up ## Alias for up
+start-all: up-all ## Alias for up-all
 
-install: up vendor ## Install the project
+install: pull compose.override.yaml up vendor ## Install the project
 
-.PHONY: up stop down pull sh build bash start install
+.PHONY: up stop down pull sh build bash start start-all install
 
 ##
 ###-----------------#
@@ -99,6 +100,9 @@ composer-require: ## Adds required packages to your composer.json and installs t
 
 vendor:	composer.lock ## Install dependencies
 	$(COMPOSER) install
+
+compose.override.yaml: compose.override.yaml.dist ## Create compose.override.yaml
+	cp compose.override.yaml.dist compose.override.yaml
 
 ##
 ###-------------#
