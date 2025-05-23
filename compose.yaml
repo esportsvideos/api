@@ -48,7 +48,7 @@ services:
             - "PHP_FPM_HOST=php"
 
     adminer:
-        image: adminer:4.17.1 # Upper version is bugged with DESIGN
+        image: adminer:4.8.1 # Upper version is bugged with DESIGN
         depends_on:
             - postgres
         environment:
