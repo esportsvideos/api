@@ -91,6 +91,14 @@ db-update: db-diff db-migrate ## Execute db-diff & db-migrate
 ###-----------------#
 ##
 
+lint-config: ## Lint yaml for config directory
+	$(CONSOLE) lint:yaml config
+
+lint-container: ## Ensures that arguments injected into services match type declarations
+	$(CONSOLE) lint:container
+
+lint: lint-config lint-container ## Lint twig and yaml files
+
 PHP_CS_FIXER=docker run --user $$(id -u):$$(id -g) --rm -v "./:/code" -w /code ghcr.io/php-cs-fixer/php-cs-fixer:3-php8.3
 
 cs: ## Check php code style

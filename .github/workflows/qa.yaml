@@ -49,6 +49,22 @@ jobs:
             -   name: Run composer validate
                 run: make composer-validate
 
+    lint:
+        name: Run linters
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Create and start containers
+                run: make up
+
+            -   name: Install dependencies
+                run: make vendor
+
+            -   name: Run linters
+                run: make lint
+
     hadolint:
         name: Run Hadolint
         runs-on: ubuntu-latest
