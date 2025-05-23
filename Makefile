@@ -50,9 +50,40 @@ bash: sh ## Alias for sh
 start: up ## Alias for up
 start-all: up-all ## Alias for up-all
 
-install: pull compose.override.yaml up vendor ## Install the project
+install: pull compose.override.yaml up vendor db-migrate ## Install the project
 
 .PHONY: up stop down pull sh build bash start start-all install
+
+##
+###----------------#
+###    Doctrine    #
+###----------------#
+##
+
+db-create: ## Creates the configured database.
+	$(CONSOLE) doctrine:database:create --if-not-exists
+
+db-drop: ## Drops the configured database
+	$(CONSOLE) doctrine:database:drop --force --if-exists
+
+db-migrate: ## Execute a migration to the latest available version.
+	$(CONSOLE) doctrine:migrations:migrate --allow-no-migration --no-interaction --all-or-nothing
+
+db-validate: ## Validate the doctrine ORM mapping
+	$(CONSOLE) doctrine:schema:validate
+
+db-schema: ## Dumps the SQL needed to update the database schema to match the current mapping metadata.
+	$(CONSOLE) doctrine:schema:update --dump-sql
+
+db-schema-force: ## Executes the SQL needed to update the database schema to match the current mapping metadata.
+	$(CONSOLE) doctrine:schema:update --force
+
+db-diff: ## Creates a new migration based on database changes
+	$(CONSOLE) make:migration
+
+db-update: db-diff db-migrate ## Execute db-diff & db-migrate
+
+.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update
 
 ##
 ###-----------------#
