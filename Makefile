@@ -72,7 +72,7 @@ phpstan: ## Analyze php code
 	$(RUN_PHP) ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
 
 stan: phpstan ## Alias for phpstan
-qa: cs phpstan ## Run all Q&A tools
+qa: cs phpstan composer-validate ## Run all Q&A tools
 
 .PHONY: cs fix-cs phpstan qa stan
 

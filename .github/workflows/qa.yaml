@@ -33,6 +33,22 @@ jobs:
             -   name: Run phpstan
                 run: make phpstan
 
+    composer-validate:
+        name: Run composer validate
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Create and start containers
+                run: make up
+
+            -   name: Install dependencies
+                run: make vendor
+
+            -   name: Run composer validate
+                run: make composer-validate
+
     hadolint:
         name: Run Hadolint
         runs-on: ubuntu-latest
