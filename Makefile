@@ -83,7 +83,12 @@ db-diff: ## Creates a new migration based on database changes
 
 db-update: db-diff db-migrate ## Execute db-diff & db-migrate
 
-.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update
+db-fixtures: ## Load data fixtures to your database
+	$(CONSOLE) doctrine:fixtures:load --no-interaction
+
+fixtures: db-fixtures ## Alias for db-fixtures
+ 
+.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update db-fixtures fixtures
 
 ##
 ###-----------------#

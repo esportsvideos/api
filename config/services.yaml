@@ -9,3 +9,14 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+when@dev: &fixtures
+    services:
+        _defaults:
+            autowire: true
+            autoconfigure: true
+
+        DataFixtures\:
+            resource: '../fixtures/'
+
+when@test: *fixtures
