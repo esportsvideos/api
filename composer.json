@@ -32,7 +32,9 @@
         "phpstan/phpstan": "^2.1.15",
         "phpstan/phpstan-doctrine": "^2.0.3",
         "phpstan/phpstan-strict-rules": "^2.0.4",
-        "phpstan/phpstan-symfony": "^2.0.6"
+        "phpstan/phpstan-symfony": "^2.0.6",
+        "symfony/stopwatch": "7.2.*",
+        "symfony/web-profiler-bundle": "7.2.*"
     },
     "config": {
         "allow-plugins": {
