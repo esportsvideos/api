@@ -3,6 +3,8 @@
 Welcome to the documentation ! Below you'll find key guides to help you
 understand (or not) and work with our Docker setup and GitHub workflows.
 
+---
+
 ## 🐳 Docker
 
 - 📝 [compose](docker/compose.md)
@@ -19,6 +21,20 @@ and how it handles permissions and debugging tools.
 
 Guide to configuring and using Xdebug for PHP debugging within the Docker
 environment.
+
+---
+
+# 🧪 [Fixtures](fixtures/index.md)
+
+## 📄 Index
+
+- [📚 Fixture Sizes & Strategy](fixtures/index.md)
+
+## 📂 Available Fixtures
+
+- [👤 UserFixtures](fixtures/UserFixtures.md)
+
+---
 
 ## 🛠️ Github
 

@@ -3,22 +3,26 @@
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
+use Symfony\Bridge\Doctrine\Types\UlidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Ulid;
 
 trait EntityIdTrait
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: UlidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UlidGenerator::class)]
     #[Groups('entity_id:read')]
-    private int $id;
+    private Ulid $id;
 
-    public function getId(): int
+    public function getId(): Ulid
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(Ulid $id): self
     {
         $this->id = $id;
 

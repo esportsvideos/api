@@ -1,0 +1,9 @@
+when@dev: &dev
+    zenstruck_foundry:
+        persistence:
+            flush_once: true
+        make_factory:
+            default_namespace: 'DataFixtures\Data'
+            add_hints: false
+
+when@test: *dev

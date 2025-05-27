@@ -84,11 +84,23 @@ db-diff: ## Creates a new migration based on database changes
 db-update: db-diff db-migrate ## Execute db-diff & db-migrate
 
 db-fixtures: ## Load data fixtures to your database
-	$(CONSOLE) doctrine:fixtures:load --no-interaction
+	$(CONSOLE) doctrine:fixtures:load --no-interaction --no-debug
+
+db-fixtures-%: ## Load data fixtures to your database with a custom size
+	$(DOCKER_COMPOSE) exec --user=www-data --env FIXTURES_SIZE=$* $(DOCKER_PHP_CONTAINER) php bin/console doctrine:fixtures:load --no-interaction --no-debug
 
 fixtures: db-fixtures ## Alias for db-fixtures
- 
-.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update db-fixtures fixtures
+
+LAST_MIGRATION := $(shell ls -t migrations/ | head -n 1 | sed 's/\.php$$//' | sed 's/^/DoctrineMigrations\\\\/')
+
+db-execute-up: ## Execute the latest migration versions up manually.
+	$(CONSOLE) doctrine:migrations:execute --up --no-interaction "${LAST_MIGRATION}"
+
+db-execute-down: ## Execute the latest migration versions down manually.
+	$(CONSOLE) doctrine:migrations:execute --down --no-interaction "${LAST_MIGRATION}"
+
+.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update 
+.PHONY: db-fixtures fixtures db-execute-up db-execute-down
 
 ##
 ###-----------------#
@@ -161,8 +173,10 @@ cc:	## Clear cache
 cc-rm: ## Clear cache by rm -rf
 	rm -rf var/cache
 
-generate-keypair: ## Generate public/private keys for jwt.
+config/jwt/public.pem: ## Generate public/private keys for jwt.
 	$(CONSOLE) lexik:jwt:generate-keypair
+
+generate-keypair: config/jwt/public.pem ## Generate public/private keys for jwt.
 
 .PHONY: cc cc-rm generate-keypair
 

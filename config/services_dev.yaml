@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $fixturesSize: '%env(enum:DataFixtures\FixturesSizeEnum:FIXTURES_SIZE)%'
+
+    DataFixtures\:
+        resource: '../fixtures/'
