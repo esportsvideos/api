@@ -50,7 +50,7 @@ bash: sh ## Alias for sh
 start: up ## Alias for up
 start-all: up-all ## Alias for up-all
 
-install: pull compose.override.yaml up vendor db-migrate ## Install the project
+install: pull compose.override.yaml up vendor db-migrate generate-keypair db-fixtures ## Install the project
 
 .PHONY: up stop down pull sh build bash start start-all install
 
@@ -161,7 +161,10 @@ cc:	## Clear cache
 cc-rm: ## Clear cache by rm -rf
 	rm -rf var/cache
 
-.PHONY: cc cc-rm
+generate-keypair: ## Generate public/private keys for jwt.
+	$(CONSOLE) lexik:jwt:generate-keypair
+
+.PHONY: cc cc-rm generate-keypair
 
 ##
 ###---------------------#
