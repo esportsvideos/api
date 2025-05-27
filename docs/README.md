@@ -24,13 +24,11 @@ environment.
 
 ---
 
-# 🧪 [Fixtures](fixtures/index.md)
-
-## 📄 Index
+## 🧪 Fixtures
 
 - [📚 Fixture Sizes & Strategy](fixtures/index.md)
 
-## 📂 Available Fixtures
+### 📂 Available Fixtures
 
 - [👤 UserFixtures](fixtures/UserFixtures.md)
 
