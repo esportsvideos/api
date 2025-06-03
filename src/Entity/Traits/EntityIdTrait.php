@@ -17,9 +17,9 @@ trait EntityIdTrait
     #[Groups('entity_id:read')]
     private Ulid $id;
 
-    public function getId(): Ulid
+    public function getId(): string
     {
-        return $this->id;
+        return $this->id->toRfc4122();
     }
 
     public function setId(Ulid $id): self
