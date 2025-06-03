@@ -5,6 +5,7 @@ DOCKER_PHP_CONTAINER=php
 DOCKER_BUILD=$(DOCKER_COMPOSE) --file compose.build.yaml
 EXEC_PHP=$(DOCKER_COMPOSE) exec --user=www-data $(DOCKER_PHP_CONTAINER)
 RUN_PHP=$(DOCKER_COMPOSE) run --rm $(DOCKER_PHP_CONTAINER)
+RUN_PHP_ALONE=$(DOCKER_COMPOSE) run --no-deps --rm $(DOCKER_PHP_CONTAINER)
 COMPOSER=$(EXEC_PHP) composer
 CONSOLE=$(EXEC_PHP) bin/console
 
@@ -125,7 +126,7 @@ fix-cs: ## Fix php code style
 	$(PHP_CS_FIXER) fix
 
 phpstan: ## Analyze php code
-	$(RUN_PHP) ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
+	$(RUN_PHP_ALONE) ./vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=1G
 
 stan: phpstan ## Alias for phpstan
 qa: cs phpstan composer-validate ## Run all Q&A tools
