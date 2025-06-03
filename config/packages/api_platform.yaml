@@ -5,6 +5,8 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        normalization_context:
+            skip_null_values: false
     formats:
         jsonld: ["application/ld+json"]
         json: ["application/json"]
