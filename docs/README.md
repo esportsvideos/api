@@ -31,6 +31,7 @@ environment.
 ### 📂 Available Fixtures
 
 - [👤 UserFixtures](fixtures/UserFixtures.md)
+- [🎬 VideoFixtures](fixtures/VideoFixtures.md)
 
 ---
 
