@@ -34,7 +34,7 @@ make db-fixtures-xxl
 Each of these documents a specific fixture class:
 
 - 👤 [UserFixtures](UserFixtures.md)
-
+- 🎬 [VideoFixtures](VideoFixtures.md)
 
 ## 📝 Notes
 
