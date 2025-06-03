@@ -7,6 +7,11 @@ api_platform:
             vary: ['Content-Type', 'Authorization', 'Origin']
         normalization_context:
             skip_null_values: false
+        pagination_client_items_per_page: true
+        pagination_maximum_items_per_page: 50
+    collection:
+        pagination:
+            items_per_page_parameter_name: itemsPerPage
     formats:
         jsonld: ["application/ld+json"]
         json: ["application/json"]
