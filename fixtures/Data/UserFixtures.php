@@ -13,8 +13,8 @@ class UserFixtures extends AbstractFixture
 
     public function loadSpecificFixtures(): void
     {
-        UserFactory::new(['id' => Ulid::fromString(self::ADMIN_ULID), 'username' => 'admin'])->isAdmin()->create();
-        UserFactory::new(['id' => Ulid::fromString(self::USER_ULID), 'username' => 'user'])->isAdmin()->create();
+        UserFactory::new(['id' => Ulid::fromString(self::ADMIN_ULID), 'email' => 'admin@esports-videos.com'])->isAdmin()->create();
+        UserFactory::new(['id' => Ulid::fromString(self::USER_ULID), 'email' => 'user@esports-videos.com'])->isAdmin()->create();
     }
 
     public function createRandomEntity(): void

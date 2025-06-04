@@ -26,15 +26,15 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
-#[UniqueEntity('username')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity('email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityIdTrait;
 
     #[Groups(['user:read'])]
     #[ORM\Column(length: 255, unique: true)]
-    private string $username;
+    private string $email;
 
     /**
      * @var list<string> The user roles
@@ -48,25 +48,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
-    public function getUsername(): string
+    public function getEmail(): string
     {
-        return $this->username;
+        return $this->email;
     }
 
-    public function setUsername(string $username): static
+    public function setEmail(string $email): static
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
 
     public function getUserIdentifier(): string
     {
-        if ('' === $this->username) {
-            throw new \LogicException('username cannot be blank.');
+        if ('' === $this->email) {
+            throw new \LogicException('email cannot be blank.');
         }
 
-        return $this->username;
+        return $this->email;
     }
 
     /**
