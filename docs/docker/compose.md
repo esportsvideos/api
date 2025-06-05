@@ -19,6 +19,7 @@ port).
 |-------------------|------------------------------|---------|
 | Nginx             | http://api.esv.localhost     |         |
 | Traefik Dashboard | http://traefik.esv.localhost |         |
+| Maildev           | http://mail.esv.localhost    |         |
 | Adminer           | http://adminer.esv.localhost | debug   |
 
 ## 🛠️ Profiles
@@ -84,6 +85,18 @@ the php fpm host, so we use the environment variable.
 We maintain a dedicated PHP image in a separate repository because the specific
 parts of the build are always the same. This allows us to cache them and
 significantly reduce build times.
+
+---
+
+### 📬 Maildev (Mail catcher)
+
+- **Image**: `maildev/maildev:latest`
+- Routed through Traefik at [
+  `http://mail.esv.localhost`](http://mail.esv.localhost).
+- Also exposes an SMTP server on port 1025 to capture outgoing emails.
+
+We use Maildev to test and inspect emails sent during development, without
+actually sending them. It simplifies debugging email content and delivery logic.
 
 ---
 

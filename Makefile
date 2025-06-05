@@ -22,6 +22,7 @@ up: ## Create and start containers
 	@echo "##################\n"
 	@echo "- Traefik : http://traefik.esv.localhost"
 	@echo "- Api : http://api.esv.localhost"
+	@echo "- Maildev : http://mail.esv.localhost"
 
 up-all: ## Create and start containers from all profiles
 	$(DOCKER_COMPOSE_ALL) up -d
@@ -30,6 +31,7 @@ up-all: ## Create and start containers from all profiles
 	@echo "##################\n"
 	@echo "- Traefik : http://traefik.esv.localhost"
 	@echo "- Api : http://api.esv.localhost"
+	@echo "- Maildev : http://mail.esv.localhost"
 	@echo "- Adminer : http://adminer.esv.localhost"
 
 stop: ## Stop all containers

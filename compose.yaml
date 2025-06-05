@@ -66,5 +66,12 @@ services:
         profiles:
             - debug
 
+    maildev:
+        image: maildev/maildev:latest
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.maildev.rule=Host(`mail.esv.localhost`)"
+            - "traefik.http.services.maildev.loadbalancer.server.port=1080"
+
 volumes:
     postgres-data: {}

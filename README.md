@@ -27,6 +27,7 @@ make install
 |-------------------|------------------------------|
 | Nginx             | http://api.esv.localhost     |
 | Traefik Dashboard | http://traefik.esv.localhost |
+| Maildev           | http://mail.esv.localhost    |
 | Adminer*          | http://adminer.esv.localhost |
 
 *Only available with [specific docker profile](docs/docker/compose.md)
