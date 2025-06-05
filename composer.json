@@ -40,6 +40,8 @@
         "symfony/expression-language": "7.2.*",
         "symfony/flex": "^2.7.1",
         "symfony/framework-bundle": "7.2.*",
+        "symfony/intl": "7.2.*",
+        "symfony/mailer": "7.2.*",
         "symfony/property-access": "7.2.*",
         "symfony/property-info": "7.2.*",
         "symfony/runtime": "7.2.*",
@@ -59,7 +61,7 @@
         "symfony/maker-bundle": "^1.63",
         "symfony/stopwatch": "7.2.*",
         "symfony/web-profiler-bundle": "7.2.*",
-        "zenstruck/foundry": "^2.5.4"
+        "zenstruck/foundry": "^2.6.0"
     },
     "config": {
         "allow-plugins": {
