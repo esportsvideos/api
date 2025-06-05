@@ -26,6 +26,9 @@ final class UserFactory extends PersistentProxyObjectFactory
             'password' => '$2y$13$i/FkNJCWxC8nTWNqo9qxD.eW.dByex5TlNq1vGQj1MzN9LeBvOV7S',
             'roles' => ['ROLE_USER'],
             'email' => self::faker()->unique()->email(),
+            'username' => self::faker()->unique()->userName(),
+            'country' => self::faker()->countryCode(),
+            'emailVerified' => true,
         ];
     }
 
