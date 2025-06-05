@@ -22,11 +22,17 @@ services:
             - POSTGRES_USER=esv
         volumes:
             - "postgres-data:/var/lib/postgresql/data:rw"
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-d", "esv", "-U", "esv" ]
+            timeout: 5s
+            retries: 5
+            start_period: 60s
 
     php:
         image: ghcr.io/esportsvideos/php:1.0.0-dev
         depends_on:
-            - postgres
+            postgres:
+                condition: service_healthy
         volumes:
             - "./:/var/www:rw"
         environment:
