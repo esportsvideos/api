@@ -51,7 +51,7 @@ bash: sh ## Alias for sh
 start: up ## Alias for up
 start-all: up-all ## Alias for up-all
 
-install: pull compose.override.yaml up vendor db-migrate generate-keypair db-fixtures ## Install the project
+install: pull compose.override.yaml up vendor db-schema-force generate-keypair db-fixtures ## Install the project
 
 .PHONY: up stop down pull sh build bash start start-all install
 
