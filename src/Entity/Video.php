@@ -14,10 +14,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ApiResource(
     normalizationContext: [
-        'groups' => [
-            'video:read',
-            'entity_id:read',
-        ],
+        'groups' => ['video:read'],
     ]
 )]
 #[ORM\HasLifecycleCallbacks]

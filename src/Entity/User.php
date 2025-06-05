@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             security: "is_granted('ROLE_ADMIN')"
         ),
     ],
-    normalizationContext: ['groups' => ['user:read', 'entity_id:read']]
+    normalizationContext: ['groups' => ['user:read']]
 )]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
