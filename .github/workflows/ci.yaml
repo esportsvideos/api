@@ -2,7 +2,7 @@ name: Execute CI tests
 
 on:
     workflow_run:
-        workflows: ["Execute QA tests"]
+        workflows: [Execute QA tests]
         types:
             - completed
 
