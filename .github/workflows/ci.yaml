@@ -5,6 +5,10 @@ on:
         branches:
             - main
     pull_request: ~
+    workflow_run:
+        workflows: ["Execute QA tests"]
+        types:
+            - completed
 
 jobs:
     test-smoke:
