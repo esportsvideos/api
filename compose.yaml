@@ -33,6 +33,8 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
+            maildev:
+                condition: service_started
         volumes:
             - "./:/var/www:rw"
         environment:

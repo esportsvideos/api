@@ -5,6 +5,7 @@ parameters:
         - config/
         - src/
         - fixtures/
+        - tests/
     symfony:
         containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
     scanDirectories:

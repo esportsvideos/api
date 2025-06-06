@@ -9,6 +9,10 @@ RUN_PHP_ALONE=$(DOCKER_COMPOSE) run --no-deps --rm $(DOCKER_PHP_CONTAINER)
 COMPOSER=$(EXEC_PHP) composer
 CONSOLE=$(EXEC_PHP) bin/console
 
+test-%: RUN_PHP=$(DOCKER_COMPOSE) run --rm --env APP_ENV=test --env XDEBUG_MODE=off $(DOCKER_PHP_CONTAINER)
+test-%: CONSOLE=$(RUN_PHP) bin/console
+test-%: COMPOSER=$(RUN_PHP) composer
+
 ##
 ###--------------#
 ###    Docker    #
@@ -54,8 +58,9 @@ start: up ## Alias for up
 start-all: up-all ## Alias for up-all
 
 install: pull compose.override.yaml up vendor db-schema-force generate-keypair db-fixtures ## Install the project
+test-install: pull vendor generate-keypair db-create db-schema-force db-fixtures ## Install the project for test environment.
 
-.PHONY: up stop down pull sh build bash start start-all install
+.PHONY: up stop down pull sh build bash start start-all install test-install
 
 ##
 ###----------------#
@@ -104,6 +109,27 @@ db-execute-down: ## Execute the latest migration versions down manually.
 
 .PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update 
 .PHONY: db-fixtures fixtures db-execute-up db-execute-down
+
+##
+###-------------#
+###    Tests    #
+###-------------#
+##
+
+test-smoke: ## Run smoke tests
+	$(RUN_PHP) bin/phpunit --no-extensions --testsuite smoke
+
+test-debug: ## Run tests with debug group/tags
+	$(RUN_PHP) bin/phpunit --group debug
+
+test-functional: ## Run functional tests
+	$(RUN_PHP) bin/phpunit --testsuite functional
+
+tests: test-smoke test-functional ## Execute all tests
+ts: test-smoke ## Alias for test-smoke
+tf: test-functional ## Alias for test-functional
+
+.PHONY: test-smoke test-debug tests test-functional ts tf
 
 ##
 ###-----------------#
