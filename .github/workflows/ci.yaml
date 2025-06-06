@@ -1,15 +1,14 @@
 name: Execute CI tests
 
 on:
-    workflow_run:
-        workflows: [Execute QA tests]
-        types:
-            - completed
+    push:
+        branches:
+            - main
+    pull_request: ~
 
 jobs:
     test-smoke:
         name: Run smoke tests
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
@@ -23,7 +22,6 @@ jobs:
 
     test-functional:
         name: Run functional tests
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout
