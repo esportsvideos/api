@@ -8,6 +8,7 @@ use Symfony\Component\Uid\Ulid;
 
 class UserFixtures extends AbstractFixture
 {
+    public const string DEFAULT_PASSWORD = 'esvESV123456';
     public const string ADMIN_ULID = '019712ef-fb77-347f-1cd9-2b1c22d259e6';
     public const string USER_ULID = '019712ef-fb78-602c-a546-f7c694bd83be';
     public const string UNVERIFIED_USER_ULID = '01973bad-1197-b299-2e4d-349108befb29';
