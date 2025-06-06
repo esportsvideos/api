@@ -38,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityIdTrait;
 
-    #[Groups(['user:read'])]
+    #[Groups(['admin:user:read'])]
     #[ORM\Column(length: 255, unique: true)]
     private string $email;
 
