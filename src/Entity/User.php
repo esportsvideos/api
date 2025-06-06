@@ -17,9 +17,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [
-        new Get(
-            security: "is_granted('ROLE_ADMIN') or object == user"
-        ),
+        new Get(),
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')"
         ),
