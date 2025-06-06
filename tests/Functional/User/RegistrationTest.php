@@ -30,10 +30,13 @@ class RegistrationTest extends ApiTestCase
         self::assertEmailCount(1);
     }
 
+    /**
+     * @param array<string, string> $violations
+     */
     #[Test]
     #[DataProvider('invalidData')]
     #[Group('debug')]
-    public function asAnonymousICannotRegisterWithInvalidPassword(?string $email, ?string $password, ?string $username, ?string $countryCode, array $violations): void
+    public function asAnonymousICannotRegisterWithInvalidPassword(?string $email, ?string $password, ?string $username, ?string $countryCode, array $violations = []): void
     {
         $data = array_filter([
             'email' => $email,

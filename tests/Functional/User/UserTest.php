@@ -16,7 +16,7 @@ final class UserTest extends ApiTestCase
     #[DataProvider('getUserCollectionAccessCases')]
     public function iCanOrCannotGetACollectionOfUsers(?string $userUlid, int $expectedStatusCode): void
     {
-        $client = $userUlid
+        $client = null !== $userUlid
             ? $this->authenticateTestClientAs($userUlid)
             : $this->client;
 
@@ -30,6 +30,9 @@ final class UserTest extends ApiTestCase
         }
     }
 
+    /**
+     * @return iterable<string, mixed>
+     */
     public static function getUserCollectionAccessCases(): iterable
     {
         yield 'anonymous cannot access' => [
@@ -48,11 +51,15 @@ final class UserTest extends ApiTestCase
         ];
     }
 
+    /**
+     * @param array<string, string> $expectedData
+     * @param array<string, string> $forbiddenFields
+     */
     #[Test]
     #[DataProvider('getUserAccessCases')]
-    public function iCanGetAUser(?string $userUlid, array $expectedData, array $forbiddenFields): void
+    public function iCanGetAUser(?string $userUlid, array $expectedData = [], array $forbiddenFields = []): void
     {
-        $client = $userUlid
+        $client = null !== $userUlid
             ? $this->authenticateTestClientAs($userUlid)
             : $this->client;
 
@@ -70,6 +77,9 @@ final class UserTest extends ApiTestCase
         self::assertJsonContains($expectedData);
     }
 
+    /**
+     * @return iterable<string, mixed>
+     */
     public static function getUserAccessCases(): iterable
     {
         yield 'anonymous' => [
