@@ -198,6 +198,19 @@ class RegistrationTest extends ApiTestCase
             ],
         ];
 
+        yield 'invalid_username' => [
+            'email' => 'correct_email@esports-videos.com',
+            'password' => UserFixtures::DEFAULT_PASSWORD,
+            'countryCode' => 'FR',
+            'username' => 'invalid%username',
+            'violations' => [
+                [
+                    'propertyPath' => 'username',
+                    'message' => 'Username can only contain letters, numbers, underscores, dashes, and dots.',
+                ],
+            ],
+        ];
+
         yield 'invalid_country_code' => [
             'email' => 'correct_email@esports-videos.com',
             'password' => UserFixtures::DEFAULT_PASSWORD,

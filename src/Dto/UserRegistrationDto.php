@@ -17,6 +17,14 @@ class UserRegistrationDto
     public mixed $email = null;
 
     #[Assert\NotBlank(allowNull: false)]
+    #[Assert\Length(
+        min: 3,
+        max: 32,
+    )]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9_.-]+$/',
+        message: 'Username can only contain letters, numbers, underscores, dashes, and dots.'
+    )]
     #[Groups('user:write')]
     public mixed $username = null;
 
