@@ -21,7 +21,9 @@ class UserRegistrationDto
     public mixed $username = null;
 
     #[Assert\NotBlank(allowNull: false)]
-    // #[Assert\PasswordStrength]
+    #[Assert\PasswordStrength(
+        minScore: Assert\PasswordStrength::STRENGTH_WEAK,
+    )]
     #[Groups('user:write')]
     public mixed $password = null;
 

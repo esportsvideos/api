@@ -10,8 +10,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class UserFactory extends PersistentProxyObjectFactory
 {
-    public const string DEFAULT_PASSWORD = 'esv';
-
     public static function class(): string
     {
         return User::class;
