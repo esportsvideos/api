@@ -3,13 +3,17 @@
 namespace App\Service\Registration;
 
 use App\Entity\User;
+use Symfony\Component\Clock\ClockInterface;
 use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class GenerateSignedUriService
 {
-    public function __construct(private UriSigner $uriSigner, private UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private UriSigner $uriSigner,
+        private UrlGeneratorInterface $urlGenerator,
+        private ClockInterface $clock,
+    ) {
     }
 
     public function generateSignedUri(User $user): string
@@ -20,7 +24,7 @@ final readonly class GenerateSignedUriService
                 ['id' => $user->getId()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ),
-            new \DateTimeImmutable('+1 day')
+            $this->clock->now()->modify('+1 day')
         );
     }
 }
