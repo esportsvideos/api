@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Dto\UserRegistrationDto;
 use App\Entity\Traits\EntityIdTrait;
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\UserRepository;
 use App\State\Processor\UserRegistrationPersistProcessor;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,7 +23,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
             security: "is_granted('ROLE_ADMIN')"
         ),
         new Post(
-            denormalizationContext: ['groups' => ['user:write']],
+            denormalizationContext: ['groups' => ['user:write'], 'allow_extra_attributes' => false],
             security: "not is_granted('IS_AUTHENTICATED_FULLY') or is_granted('ROLE_ADMIN')",
             input: UserRegistrationDto::class,
             processor: UserRegistrationPersistProcessor::class,
@@ -34,9 +35,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityIdTrait;
+    use TimestampableTrait;
 
     #[Groups(['admin:user:read'])]
     #[ORM\Column(length: 255, unique: true)]
