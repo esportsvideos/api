@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator;
 abstract class AbstractFixture extends DoctrineFixture
 {
     public function __construct(
-        private readonly FixturesSizeEnum $fixturesSize,
+        protected readonly FixturesSizeEnum $fixturesSize,
     ) {
     }
 
@@ -23,17 +23,18 @@ abstract class AbstractFixture extends DoctrineFixture
         $em = $manager;
         $em->getConnection()->getConfiguration()->setMiddlewares([]);
 
-        /** @var ClassMetadata<object> $metadata */
-        $metadata = $em->getClassMetadata($this->getFixtureEntityClass());
-
-        $metadata->setIdGenerator(new AssignedGenerator());
-        $this->loadSpecificFixtures();
-
-        $metadata->setIdGenerator(new UlidGenerator());
         for ($i = 1; $i <= $this->fixturesSize->getFixtureSize(); ++$i) {
             $this->createRandomEntity();
             $manager->clear();
         }
+
+        /** @var ClassMetadata<object> $metadata */
+        $metadata = $em->getClassMetadata($this->getFixtureEntityClass());
+        $metadata->setIdGenerator(new AssignedGenerator());
+
+        $this->loadSpecificFixtures();
+
+        $metadata->setIdGenerator(new UlidGenerator());
     }
 
     abstract public function createRandomEntity(): void;
