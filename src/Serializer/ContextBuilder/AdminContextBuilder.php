@@ -22,14 +22,9 @@ final readonly class AdminContextBuilder implements SerializerContextBuilderInte
         $context = $this->decorated->createFromRequest($request, $normalization, $extractedAttributes);
 
         if (isset($context['groups']) && is_array($context['groups']) && true === $normalization && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $adminGroups = array_map(static fn ($group) => 'admin:'.$group, $context['groups']);
             $context['groups'] = array_merge(
                 $context['groups'],
-                $adminGroups,
-                [
-                    'admin:blameable:read',
-                    'admin:timestampable:read',
-                ]
+                array_map(static fn ($group) => 'admin:'.$group, $context['groups'])
             );
         }
 

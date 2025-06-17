@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Attribute\AsDecorator;
 use Symfony\Component\HttpFoundation\Request;
 
 #[AsDecorator(decorates: 'api_platform.serializer.context_builder', priority: 1)]
-final readonly class EntityIdContextBuilder implements SerializerContextBuilderInterface
+final readonly class DefaultGroupsContextBuilder implements SerializerContextBuilderInterface
 {
     public function __construct(
         private SerializerContextBuilderInterface $decorated,
@@ -23,6 +23,7 @@ final readonly class EntityIdContextBuilder implements SerializerContextBuilderI
 
         if (isset($context['groups']) && is_array($context['groups']) && true === $normalization) {
             $context['groups'][] = 'entity_id:read';
+            $context['groups'][] = 'timestampable:read';
         }
 
         return $context;

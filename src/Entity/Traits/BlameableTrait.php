@@ -8,12 +8,12 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 trait BlameableTrait
 {
-    #[Groups('admin:blameable:read')]
+    #[Groups(['blameable:read', 'admin:blameable:read', 'blameable_created_by:read',  'admin:blameable_created_by:read'])]
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $createdBy = null;
 
-    #[Groups('admin:blameable:read')]
+    #[Groups(['blameable:read', 'admin:blameable:read', 'blameable_updated_by:read',  'admin:blameable_updated_by:read'])]
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $updatedBy = null;

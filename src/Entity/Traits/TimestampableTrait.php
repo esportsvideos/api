@@ -7,11 +7,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 trait TimestampableTrait
 {
-    #[Groups('admin:timestampable:read')]
+    #[Groups('timestampable:read')]
     #[ORM\Column(type: 'datetime_immutable', options: ['default' => 'CURRENT_TIMESTAMP'])]
     private \DateTimeImmutable $createdAt;
 
-    #[Groups('admin:timestampable:read')]
+    #[Groups('timestampable:read')]
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
@@ -45,7 +45,6 @@ trait TimestampableTrait
         $this->createdAt = new \DateTimeImmutable();
     }
 
-    #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function updateUpdatedAt(): void
     {
