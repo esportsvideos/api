@@ -11,6 +11,8 @@ use App\Entity\Traits\EntityIdTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\UserRepository;
 use App\State\Processor\UserRegistrationPersistProcessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -45,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, unique: true)]
     private string $email;
 
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'video:read', 'video_comment:read'])]
     #[ORM\Column(length: 255, unique: true)]
     private string $username;
 
@@ -68,6 +70,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     #[ORM\Column(type: 'string', length: 2, nullable: true)]
     private ?string $country;
+
+    /**
+     * @var Collection<int, VideoComment>
+     */
+    #[ORM\OneToMany(targetEntity: VideoComment::class, mappedBy: 'user')]
+    public Collection $videoComments;
+
+    /**
+     * @var Collection<int, VideoComment>
+     */
+    #[ORM\OneToMany(targetEntity: VideoComment::class, mappedBy: 'moderatedBy')]
+    public Collection $moderatedVideoComments;
+
+    public function __construct()
+    {
+        $this->videoComments = new ArrayCollection();
+        $this->moderatedVideoComments = new ArrayCollection();
+    }
 
     public function getEmail(): string
     {

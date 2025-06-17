@@ -2,19 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Traits\BlameableTrait;
 use App\Entity\Traits\EntityIdTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\VideoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
     normalizationContext: [
-        'groups' => ['video:read'],
+        'groups' => ['video:read', 'blameable:read'],
     ]
 )]
 #[ORM\HasLifecycleCallbacks]
@@ -39,6 +48,19 @@ class Video
     #[Groups('video:read')]
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $releaseDate = null;
+
+    /**
+     * @var Collection<int, VideoComment>
+     */
+    #[ApiProperty(uriTemplate: '/videos/{videoId}/video_comments')]
+    #[Groups('video:read')]
+    #[ORM\OneToMany(targetEntity: VideoComment::class, mappedBy: 'video')]
+    public Collection $videoComments;
+
+    public function __construct()
+    {
+        $this->videoComments = new ArrayCollection();
+    }
 
     public function getTitle(): ?string
     {
@@ -86,5 +108,11 @@ class Video
         $this->releaseDate = $releaseDate;
 
         return $this;
+    }
+
+    #[Groups('video:read')]
+    public function getVideoCommentsCount(): int
+    {
+        return $this->videoComments->count();
     }
 }

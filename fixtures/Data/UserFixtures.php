@@ -11,6 +11,7 @@ class UserFixtures extends AbstractFixture
     public const string DEFAULT_PASSWORD = 'esvESV123456';
     public const string ADMIN_ULID = '019712ef-fb77-347f-1cd9-2b1c22d259e6';
     public const string USER_ULID = '019712ef-fb78-602c-a546-f7c694bd83be';
+    public const string ANOTHER_USER_ULID = '019779c6-beca-19ae-b374-621cb3735761';
     public const string UNVERIFIED_USER_ULID = '01973bad-1197-b299-2e4d-349108befb29';
 
     public function loadSpecificFixtures(): void
@@ -35,6 +36,13 @@ class UserFixtures extends AbstractFixture
             'username' => 'unverified.user',
             'country' => 'FR',
             'emailVerified' => false,
+        ])->create();
+
+        UserFactory::new([
+            'id' => Ulid::fromString(self::ANOTHER_USER_ULID),
+            'email' => 'another.user@esports-videos.com',
+            'username' => 'another.user',
+            'country' => 'FR',
         ])->create();
     }
 

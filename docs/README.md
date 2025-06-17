@@ -5,6 +5,24 @@ understand (or not) and work with our Docker setup and GitHub workflows.
 
 ---
 
+## 🌟 Features
+
+Documentation of API features and business rules per domain.
+
+- [👤 Users](features/users.md)
+
+This resource handles user registration and access to user information via the API.
+
+- [🎬 Videos](features/videos.md)
+
+This resource exposes video entities with their main attributes and associated comments.
+
+- [💬 Video Comments](features/video_comments.md)
+
+This resource manages comments attached to videos, including their moderation status.
+
+---
+
 ## 🐳 Docker
 
 - 📝 [compose](docker/compose.md)
@@ -32,6 +50,7 @@ environment.
 
 - [👤 UserFixtures](fixtures/UserFixtures.md)
 - [🎬 VideoFixtures](fixtures/VideoFixtures.md)
+- [💬 VideoCommentFixtures](fixtures/VideoCommentFixtures.md)
 
 ---
 

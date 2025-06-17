@@ -28,7 +28,7 @@ final class VideoFactory extends PersistentProxyObjectFactory
             'duration' => self::faker()->randomNumber(3),
             'releaseDate' => self::faker()->dateTime(),
             'createdBy' => UserFactory::random(),
-            'updatedBy' => UserFactory::random(),
+            'updatedBy' => null,
         ];
     }
 }

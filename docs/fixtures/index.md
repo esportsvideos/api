@@ -35,6 +35,7 @@ Each of these documents a specific fixture class:
 
 - 👤 [UserFixtures](UserFixtures.md)
 - 🎬 [VideoFixtures](VideoFixtures.md)
+- 💬 [VideoCommentFixtures](VideoCommentFixtures.md)
 
 ## 📝 Notes
 
