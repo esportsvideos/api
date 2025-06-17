@@ -86,17 +86,20 @@ db-schema: ## Dumps the SQL needed to update the database schema to match the cu
 db-schema-force: ## Executes the SQL needed to update the database schema to match the current mapping metadata.
 	$(CONSOLE) doctrine:schema:update --force
 
+test-db-schema-force: db-schema-force ## Executes the SQL needed to update the database schema to match the current mapping metadata for test environment.
+
 db-diff: ## Creates a new migration based on database changes
 	$(CONSOLE) make:migration
 
 db-update: db-diff db-migrate ## Execute db-diff & db-migrate
 
 db-fixtures: ## Load data fixtures to your database
-	$(CONSOLE) doctrine:fixtures:load --no-interaction --no-debug
+	$(CONSOLE) doctrine:fixtures:load --no-interaction
 
 db-fixtures-%: ## Load data fixtures to your database with a custom size
 	$(DOCKER_COMPOSE) exec --user=www-data --env FIXTURES_SIZE=$* $(DOCKER_PHP_CONTAINER) php bin/console doctrine:fixtures:load --no-interaction --no-debug
 
+test-db-fixtures: db-fixtures ## Load data fixtures to your database for test environment
 fixtures: db-fixtures ## Alias for db-fixtures
 
 LAST_MIGRATION := $(shell ls -t migrations/ | head -n 1 | sed 's/\.php$$//' | sed 's/^/DoctrineMigrations\\\\/')
@@ -107,8 +110,8 @@ db-execute-up: ## Execute the latest migration versions up manually.
 db-execute-down: ## Execute the latest migration versions down manually.
 	$(CONSOLE) doctrine:migrations:execute --down --no-interaction "${LAST_MIGRATION}"
 
-.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force db-diff db-update 
-.PHONY: db-fixtures fixtures db-execute-up db-execute-down
+.PHONY: db-create db-drop db-migrate db-validate db-schema db-schema-force test-db-schema-force db-diff db-update
+.PHONY: db-fixtures test-db-fixtures fixtures db-execute-up db-execute-down
 
 ##
 ###-------------#
@@ -119,7 +122,7 @@ db-execute-down: ## Execute the latest migration versions down manually.
 test-smoke: ## Run smoke tests
 	$(RUN_PHP) bin/phpunit --no-extensions --testsuite smoke
 
-test-debug: ## Run tests with debug group/tags
+test-debug: cc ## Run tests with debug group/tags
 	$(RUN_PHP) bin/phpunit --group debug
 
 test-functional: ## Run functional tests
